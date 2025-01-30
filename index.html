@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Login with Supabase</title>
+  <title>Supabase Auth Example</title>
 </head>
 <body>
-  <h1>Email Login with Supabase</h1>
-  
+  <h1>Supabase Auth Example</h1>
+
+  <!-- 로그인 폼 -->
   <div id="login-form">
     <label for="email">Email:</label>
     <input type="email" id="email" placeholder="Enter your email" required>
-    <button onclick="sendMagicLink()">Login</button>
+    <button id="login-button">Login</button>
   </div>
-  
+
+  <!-- 사용자 정보 표시 -->
   <div id="user-info" style="display: none;">
     <h2>Welcome, <span id="user-name"></span></h2>
-    <button onclick="logout()">Logout</button>
+    <button id="logout-button">Logout</button>
   </div>
 
   <script type="module">
@@ -27,7 +29,7 @@
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiZmVrd3h3Y2R4Y2lhZmFlb2p0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgyMDI5ODgsImV4cCI6MjA1Mzc3ODk4OH0.v2BVsbxJ9AEk3J1KAGHcPUB0HmXy-dDED8GtRv4T2qs";  // Supabase에서 발급된 공개 키
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
+
     // 마법의 링크로 로그인
     async function sendMagicLink() {
       const email = document.getElementById('email').value;
@@ -69,6 +71,12 @@
       document.getElementById('user-info').style.display = 'block';
       document.getElementById('user-name').innerText = session.user.email;
     }
+
+    // 로그인 버튼 클릭 시 이벤트
+    document.getElementById('login-button').addEventListener('click', sendMagicLink);
+
+    // 로그아웃 버튼 클릭 시 이벤트
+    document.getElementById('logout-button').addEventListener('click', logout);
   </script>
 </body>
 </html>
