@@ -24,12 +24,12 @@
   <script type="module">
     // Supabase 클라이언트 초기화
     import { createClient } from "https://esm.sh/@supabase/supabase-js";
-    
-    const SUPABASE_URL = "https://abfekwxwcdxciafaeojt.supabase.co";  // 본인 프로젝트 URL
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiZmVrd3h3Y2R4Y2lhZmFlb2p0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgyMDI5ODgsImV4cCI6MjA1Mzc3ODk4OH0.v2BVsbxJ9AEk3J1KAGHcPUB0HmXy-dDED8GtRv4T2qs";  // Supabase에서 발급된 공개 키
-
+  
+    const SUPABASE_URL = "https://your-project-id.supabase.co";  // 본인 프로젝트 URL
+    const SUPABASE_ANON_KEY = "your-anon-key";  // Supabase에서 발급된 공개 키
+  
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+  
     // 마법의 링크로 로그인
     async function sendMagicLink() {
       const email = document.getElementById('email').value;
@@ -37,21 +37,21 @@
       const { user, error } = await supabase.auth.signInWithOtp({
         email: email,
       });
-
+  
       if (error) {
         alert(error.message);
       } else {
         alert('Check your email for the magic link!');
       }
     }
-
+  
     // 로그아웃
     async function logout() {
       await supabase.auth.signOut();
       document.getElementById('login-form').style.display = 'block';
       document.getElementById('user-info').style.display = 'none';
     }
-
+  
     // 사용자가 로그인했는지 확인
     supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
@@ -63,20 +63,20 @@
         document.getElementById('user-info').style.display = 'none';
       }
     });
-
+  
     // 페이지 로드 시 로그인 상태 확인
-    const session = supabase.auth.session();
+    const { data: { session } } = await supabase.auth.getSession();
     if (session) {
       document.getElementById('login-form').style.display = 'none';
       document.getElementById('user-info').style.display = 'block';
       document.getElementById('user-name').innerText = session.user.email;
     }
-
+  
     // 로그인 버튼 클릭 시 이벤트
     document.getElementById('login-button').addEventListener('click', sendMagicLink);
-
+  
     // 로그아웃 버튼 클릭 시 이벤트
     document.getElementById('logout-button').addEventListener('click', logout);
-  </script>
+  </script>  
 </body>
 </html>
